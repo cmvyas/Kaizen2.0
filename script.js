@@ -1,60 +1,173 @@
-const colorPickerBtn = document.querySelector("#color-picker");
-const clearAll = document.querySelector(".clear-all");
-const colorList = document.querySelector(".all-colors");
-const pickedColors = JSON.parse(localStorage.getItem("picked-colors") || "[]");
-
-// Copying the color code to the clipboard and updating the element text
-const copyColor = (elem) => {
-    elem.innerText = "Copied";
-    navigator.clipboard.writeText(elem.dataset.color);
-    setTimeout(() => elem.innerText = elem.dataset.color, 1000);
-}
-
-const showColor = () => {
-    if(!pickedColors.length) return; // Returning if there are no picked colors
-    colorList.innerHTML = pickedColors.map(color => `
-        <li class="color">
-            <span class="rect" style="background: ${color}; border: 1px solid ${color == "#ffffff" ? "#ccc": color}"></span>
-            <span class="value hex" data-color="${color}">${color}</span>
-        </li>
-    `).join(""); // // Generating li for the picked color and adding it to the colorList
-    document.querySelector(".picked-colors").classList.remove("hide");
-
-    // Add a click event listener to each color element to copy the color code
-    document.querySelectorAll(".color").forEach(li => {
-        li.addEventListener("click", e => copyColor(e.currentTarget.lastElementChild));
-    });
-}
-showColor();
-
-const activateEyeDropper = () => {
-    document.body.style.display = "none";
-    setTimeout(async () => {
-        try {
-            // Opening the eye dropper and getting the selected color
-            const eyeDropper = new EyeDropper();
-            const { sRGBHex } = await eyeDropper.open();
-            navigator.clipboard.writeText(sRGBHex);
-
-            // Adding the color to the list if it doesn't already exist
-            if(!pickedColors.includes(sRGBHex)) {
-                pickedColors.push(sRGBHex);
-                localStorage.setItem("picked-colors", JSON.stringify(pickedColors));
-                showColor();
+class TreeNode {
+    constructor(value) {
+      this.value = value;
+      this.children = [];
+      this.count = 0;
+    }
+  }
+  
+  class UniqueTree {
+    constructor() {
+      this.root = new TreeNode("Root");
+    }
+  
+    insert(parentNode, property, value) {
+      for (const child of parentNode.children) {
+        if (child.value === property) {
+          for (const subChild of child.children) {
+            if (subChild.value === value) {
+              subChild.count++;
+              return;
             }
-        } catch (error) {
-            alert("Failed to copy the color code!");
+          }
+          const newNode = new TreeNode(value);
+          newNode.count = 1;
+          child.children.push(newNode);
+          return;
         }
-        document.body.style.display = "block";
-    }, 10);
-}
+      }
+      const newPropertyNode = new TreeNode(property);
+      const newNode = new TreeNode(value);
+      newNode.count = 1;
+      newPropertyNode.children.push(newNode);
+      parentNode.children.push(newPropertyNode);
+    }
+  }
+  
+  function fetchSpecificProperties(rootElement = document.body) {
+    function getElementSpecificProperties(element) {
+      const computedStyles = window.getComputedStyle(element);
+      const specificProperties = {
+        "background-color": computedStyles.backgroundColor,
+        "color": computedStyles.color,
+        "font-family": computedStyles.fontFamily,
+        "font-size": computedStyles.fontSize,
+        "border-radius": computedStyles.borderRadius,
+      };
+  
+      return specificProperties;
+    }
+  
+    function traverse(element, tree) {
+      const tagNameLevel1 = element.tagName;
+      const properties = getElementSpecificProperties(element);
+  
+      tree.insert(tree.root, tagNameLevel1);
+  
+      for (const property in properties) {
+        tree.insert(tree.root, tagNameLevel1, property);
+        tree.insert(tree.root.children.find((child) => child.value === tagNameLevel1), property, properties[property]);
+      }
+  
+      for (const childElement of element.children) {
+        traverse(childElement, tree);
+      }
+    }
+  
+    const tree = new UniqueTree();
+    traverse(rootElement, tree);
+  
+    return tree;
+  }
+  
+  const tree = fetchSpecificProperties();
+  console.log(tree);
+  
+  
+  ///////
+  
+  
+  var a1 = tree.root.children;
+  var count_bg_color = count_color = count_font_family = count_font_size = count_border_radius = 0;
+  var bg_color = color = font_family = font_size = border_radius ='';
+  for(i=0; i<a1.length; i++){
+    if(typeof a1[i].value!='undefined'){
+     // console.log(a1[i].value);
+      for(j=0; j<a1[i].children.length; j++){
+        if(typeof a1[i].children[j].value!='undefined'){
+         // console.log(a1[i].children[j].value);
+  
+            if(a1[i].children[j].value === 'background-color'){
+              for(k=0; k<a1[i].children[j].children.length; k++){
+                if(typeof a1[i].children[j].children[k].value!='undefined'){
+                 // console.log(a1[i].children[j].children[k].value);
+                 // console.log(a1[i].children[j].children[k].count);
+                  if(a1[i].children[j].children[k].count>count_bg_color) 
+                  {
+                    count_bg_color=a1[i].children[j].children[k].count;
+                    bg_color=a1[i].children[j].children[k].value;
+                  
+                  }
+                }
+              }
+            }
+  
+            else if(a1[i].children[j].value === 'color'){
+              for(k=0; k<a1[i].children[j].children.length; k++){
+                if(typeof a1[i].children[j].children[k].value!='undefined'){
+                //  console.log(a1[i].children[j].children[k].value);
+               //   console.log(a1[i].children[j].children[k].count);
+                  if(a1[i].children[j].children[k].count>count_color) {count_color=a1[i].children[j].children[k].count;
+                  color=bg_color=a1[i].children[j].children[k].value;}
+                }
+              }
+            }
+  
+            else if(a1[i].children[j].value === 'font-family'){
+              for(k=0; k<a1[i].children[j].children.length; k++){
+                if(typeof a1[i].children[j].children[k].value!='undefined'){
+                  if(a1[i].children[j].children[k].count>count_font_family) 
+                  {count_font_family=a1[i].children[j].children[k].count;
+                    font_family=a1[i].children[j].children[k].value;}
+                  
+                }
+              }
+            }
+  
+            else if(a1[i].children[j].value === 'font-size'){
+              for(k=0; k<a1[i].children[j].children.length; k++){
+                if(typeof a1[i].children[j].children[k].value!='undefined'){
+                  if(a1[i].children[j].children[k].count>count_font_size) {count_font_size=a1[i].children[j].children[k].count;
+                    font_size=a1[i].children[j].children[k].value;
+                  }
+                //  console.log(a1[i].children[j].children[k].value);
+                 // console.log(a1[i].children[j].children[k].count);
+                }
+              }
+            }
+  
+            else if(a1[i].children[j].value === 'border-radius'){
+              for(k=0; k<a1[i].children[j].children.length; k++){
+                if(typeof a1[i].children[j].children[k].value!='undefined'){
+                  if(a1[i].children[j].children[k].count>count_border_radius) {
+                    count_border_radius=a1[i].children[j].children[k].count;
+                    border_radius=a1[i].children[j].children[k].value;
+                  }
+                 // console.log(a1[i].children[j].children[k].value);
+               //   console.log(a1[i].children[j].children[k].count);
+                }
+              }
+            }
+            
+            
+            
+          
+        }
+      }
+    }
+  
+  } 
+  
+      console.log("Best backaground color for your template will be:" + bg_color);
+      console.log("Best font color for your template will be:" + color);
+      console.log("Best font type for your template will be:" + font_family);
+      console.log("Best font_size for your template will be:" + font_size);
+      console.log("If you wanna give border box radius choose this:" + border_radius);
+     
+/////// localstorage
 
-// Clearing all picked colors, updating local storage, and hiding the colorList element
-const clearAllColors = () => {
-    pickedColors.length = 0;
-    localStorage.setItem("picked-colors", JSON.stringify(pickedColors));
-    document.querySelector(".picked-colors").classList.add("hide");
-}
-
-clearAll.addEventListener("click", clearAllColors);
-colorPickerBtn.addEventListener("click", activateEyeDropper);
+localStorage.setItem('bg_color', bg_color);
+localStorage.setItem('color', color);
+localStorage.setItem('font_family', font_family);
+localStorage.setItem('font_size', font_size);
+localStorage.setItem('border_radius', border_radius);
