@@ -74,100 +74,46 @@ class TreeNode {
   console.log(tree);
   
   
-  ///////
-  
+  //-------------------------------------------------------------------------//
   
   var a1 = tree.root.children;
-  var count_bg_color = count_color = count_font_family = count_font_size = count_border_radius = 0;
-  var bg_color = color = font_family = font_size = border_radius ='';
+  var v1, v2, max1, max2, temp;
+  
+  var strGlobal="";
+  var strGlobalFull="";
   for(i=0; i<a1.length; i++){
     if(typeof a1[i].value!='undefined'){
-     // console.log(a1[i].value);
+      //console.log(a1[i].value);
       for(j=0; j<a1[i].children.length; j++){
         if(typeof a1[i].children[j].value!='undefined'){
-         // console.log(a1[i].children[j].value);
-  
-            if(a1[i].children[j].value === 'background-color'){
-              for(k=0; k<a1[i].children[j].children.length; k++){
-                if(typeof a1[i].children[j].children[k].value!='undefined'){
-                 // console.log(a1[i].children[j].children[k].value);
-                 // console.log(a1[i].children[j].children[k].count);
-                  if(a1[i].children[j].children[k].count>count_bg_color) 
-                  {
-                    count_bg_color=a1[i].children[j].children[k].count;
-                    bg_color=a1[i].children[j].children[k].value;
-                  
-                  }
-                }
-              }
-            }
-  
-            else if(a1[i].children[j].value === 'color'){
-              for(k=0; k<a1[i].children[j].children.length; k++){
-                if(typeof a1[i].children[j].children[k].value!='undefined'){
-                //  console.log(a1[i].children[j].children[k].value);
-               //   console.log(a1[i].children[j].children[k].count);
-                  if(a1[i].children[j].children[k].count>count_color) {count_color=a1[i].children[j].children[k].count;
-                  color=bg_color=a1[i].children[j].children[k].value;}
-                }
-              }
-            }
-  
-            else if(a1[i].children[j].value === 'font-family'){
-              for(k=0; k<a1[i].children[j].children.length; k++){
-                if(typeof a1[i].children[j].children[k].value!='undefined'){
-                  if(a1[i].children[j].children[k].count>count_font_family) 
-                  {count_font_family=a1[i].children[j].children[k].count;
-                    font_family=a1[i].children[j].children[k].value;}
-                  
-                }
-              }
-            }
-  
-            else if(a1[i].children[j].value === 'font-size'){
-              for(k=0; k<a1[i].children[j].children.length; k++){
-                if(typeof a1[i].children[j].children[k].value!='undefined'){
-                  if(a1[i].children[j].children[k].count>count_font_size) {count_font_size=a1[i].children[j].children[k].count;
-                    font_size=a1[i].children[j].children[k].value;
-                  }
-                //  console.log(a1[i].children[j].children[k].value);
-                 // console.log(a1[i].children[j].children[k].count);
-                }
-              }
-            }
-  
-            else if(a1[i].children[j].value === 'border-radius'){
-              for(k=0; k<a1[i].children[j].children.length; k++){
-                if(typeof a1[i].children[j].children[k].value!='undefined'){
-                  if(a1[i].children[j].children[k].count>count_border_radius) {
-                    count_border_radius=a1[i].children[j].children[k].count;
-                    border_radius=a1[i].children[j].children[k].value;
-                  }
-                 // console.log(a1[i].children[j].children[k].value);
-               //   console.log(a1[i].children[j].children[k].count);
-                }
-              }
-            }
+          //console.log(a1[i].children[j].value);
             
-            
+            const numbers = [];
             
           
+            if(typeof a1[i].children[j].children[0].value!='undefined' || typeof a1[i].children[j].children[1].value!='undefined'){
+  
+                if(a1[i].children[j].children.length<2){
+                    //console.log("Only 1 value");
+                    v1 = a1[i].children[j].children[0].value;
+                    max1 = a1[i].children[j].children[0].count;
+                    v2 = "";
+                    max2 = "";
+                } else if(a1[i].children[j].children.length<3){
+                    //console.log("Only 2 value");
+                    v1 = a1[i].children[j].children[0].value;
+                    max1 = a1[i].children[j].children[0].count;
+                    v2 = a1[i].children[j].children[1].value;
+                    max2 = a1[i].children[j].children[1].count;
+                }
+                
+                strGlobal = a1[i].value+" "+a1[i].children[j].value+" "+v1+" "+max1+" "+v2+" "+max2+";";
+                strGlobalFull=strGlobalFull+a1[i].value+" "+a1[i].children[j].value+" "+v1+" "+max1+" "+v2+" "+max2+";";
+                console.log(strGlobal);
+            }
         }
       }
     }
+  }
   
-  } 
-  
-      console.log("Best backaground color for your template will be:" + bg_color);
-      console.log("Best font color for your template will be:" + color);
-      console.log("Best font type for your template will be:" + font_family);
-      console.log("Best font_size for your template will be:" + font_size);
-      console.log("If you wanna give border box radius choose this:" + border_radius);
-     
-/////// localstorage
-
-localStorage.setItem('bg_color', bg_color);
-localStorage.setItem('color', color);
-localStorage.setItem('font_family', font_family);
-localStorage.setItem('font_size', font_size);
-localStorage.setItem('border_radius', border_radius);
+  console.log(strGlobalFull);
