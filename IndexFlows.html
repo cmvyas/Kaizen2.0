@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flow Theme</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- <script src="/main.js"></script> -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const navbarContainer = document.getElementById("navbar-container");
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (this.readyState === 4 && this.status === 200) {
+        navbarContainer.innerHTML = this.responseText;
+      }
+    };
+    xhr.open("GET", "main.html", true);
+    xhr.send();
+  });
+</script>
+  <style>
+    .card {
+      cursor: pointer;
+      margin: 20px;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      text-align: center;
+    }
+    /* Add custom styles for the footer (optional) */
+    footer {
+      background-color: #002952;
+      padding: 10px;
+      text-align: center;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+    body {
+  font-family: Arial, sans-serif;
+  margin: 50px;
+}
+
+.tip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tip {
+  cursor: pointer;
+  border-bottom: 1px dashed #888;
+}
+
+.tip-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #888;
+  padding: 10px;
+  max-width: 200px;
+  z-index: 1;
+}
+
+.tip-container:hover .tip-content {
+  display: block;
+}
+
+  </style>
+</head>
+
+<body>
+<div id="navbar-container"></div>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card" data-toggle="modal" data-target="#previewModal1">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card Image 1">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card" data-toggle="modal" data-target="#previewModal2">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card Image 2">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card" data-toggle="modal" data-target="#previewModal3">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card Image 3">
+        </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card" data-toggle="modal" data-target="#previewModal1">
+              <!-- <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card Image 1"> -->
+              <!-- <img src="data:image/png;base64,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" width="179" height="83" class="WFMAM- WFMAATF"> -->
+              <div class="tip-container">
+                <span class="tip">Hover over me for a tip!</span>
+                <div class="tip-content">
+                  This is an information tip. You can add any relevant information or content here.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card" data-toggle="modal" data-target="#previewModal2">
+              <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card Image 2">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card" data-toggle="modal" data-target="#previewModal3">
+              <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card Image 3">
+            </div>
+            </div>
+            </div>
+      </div>
+<!-- Add Bootstrap JavaScript and jQuery links here -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+      <!-- Preview Modals -->
+<div class="modal fade" id="previewModal1" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="previewModalLabel1">Preview Card 1</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="https://via.placeholder.com/300" class="img-fluid" alt="Preview Card 1">
+        <p>This is the preview content of Card 1. Replace this text with your own preview content.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="previewModal2" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="previewModalLabel2">Preview Card 2</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="https://via.placeholder.com/300" class="img-fluid" alt="Preview Card 2">
+        <p>This is the preview content of Card 2. Replace this text with your own preview content.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="previewModal3" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel3" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="previewModalLabel3">Preview Card 3</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="https://via.placeholder.com/300" class="img-fluid" alt="Preview Card 3">
+        <p>This is the preview content of Card 3. Replace this text with your own preview content.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
+  </div>
+</body>
+</html>
